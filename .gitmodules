@@ -1,0 +1,6 @@
+[submodule "libs/spdlog"]
+	path = libs/spdlog
+	url = https://github.com/gabime/spdlog.git
+[submodule "libs/catch2"]
+	path = libs/catch2
+	url = https://github.com/catchorg/Catch2
