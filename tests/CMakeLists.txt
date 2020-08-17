@@ -1,6 +1,12 @@
 add_executable(tests
     test_main.cpp
     test_turn.cpp
+
+    # Parser ---
+    test_parser/test_parser.h
+    test_parser/test_primitives/test_comment.cpp
+    test_parser/test_primitives/test_register.cpp
+    test_parser/test_primitives/test_expression.cpp
 )
 add_test(NAME SpimbotTests COMMAND tests)
 
