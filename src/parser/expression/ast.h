@@ -2,16 +2,11 @@
 #ifndef SPIMBOT_PARSER_AST_H
 #define SPIMBOT_PARSER_AST_H
 
-#include <boost/fusion/adapted/struct.hpp>
-#include <boost/fusion/sequence.hpp>
-#include <boost/spirit/home/x3/support/ast/position_tagged.hpp>
-#include <boost/spirit/home/x3/support/ast/variant.hpp>
-#include <boost/spirit/include/support_istream_iterator.hpp>
-#include <boost/variant/apply_visitor.hpp>
-#include <boost/variant/recursive_variant.hpp>
 #include <iostream>
 #include <list>
 #include <vector>
+
+#include "../parser_helpers.h"
 
 namespace client {
 namespace ast {
@@ -41,7 +36,7 @@ enum optoken {
     op_bitwise_or
 };  // , op_and, op_or ;
 
-char to_string(const optoken token) {
+constexpr char to_string(const optoken token) {
     switch (token) {
         case op_plus:
             return '+';
@@ -66,7 +61,7 @@ char to_string(const optoken token) {
     }
 }
 
-struct unary {
+struct unary : x3::position_tagged {
     optoken operator_;
     operand operand_;
 };

@@ -2,9 +2,9 @@
 #ifndef SPIMBOT_PARSER_EXPRESSION_H
 #define SPIMBOT_PARSER_EXPRESSION_H
 
-#include <boost/spirit/home/x3.hpp>
 #include <cstdint>
 
+#include "../parser_helpers.h"
 #include "../primitives/keywords.h"
 #include "ast.h"
 

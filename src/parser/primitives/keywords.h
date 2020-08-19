@@ -1,20 +1,18 @@
-#include <boost/spirit/home/x3.hpp>
+#pragma once
+#ifndef SPIMBOT_PARSER_PRIMITIVES_KEYWORDS_H
+#define SPIMBOT_PARSER_PRIMITIVES_KEYWORDS_H
+
 #include <cstdint>
 #include <string>
 #include <unordered_map>
 
 #include "../parser_helpers.h"
-#include "directive.h"
+#include "directive_symbols.h"
 #include "instruction.h"
 #include "register.h"
 
 namespace mips_parser {
 namespace x3 = boost::spirit::x3;
-
-// Helper lambdas
-auto make_keyword = [](std::string kw) { return lexeme[x3::lit(kw) >> !alnum]; };
-auto to_keyword = [](auto kw) { return lexeme[kw >> !alnum]; };
-
 
 /**
  * Identifier character sets.
@@ -50,11 +48,8 @@ const auto BARE_MACHINE_KEYWORDS = [=]() {
     return sym;
 }();
 
-
 const auto FP_REG = to_keyword(fp_register_);
 const auto REG = to_keyword(register_);
-
-
 
 const auto RESERVED = lexeme[DEFAULT_KEYWORDS >> !ident_];
 const auto BARE_MACHINE_RESERVED = lexeme[DEFAULT_KEYWORDS >> !ident_];
@@ -68,3 +63,5 @@ const auto BARE_MACHINE_IDENT = as<std::string>(lexeme[(first_ident_ >> *ident_)
 
 
 }  // namespace mips_parser
+
+#endif

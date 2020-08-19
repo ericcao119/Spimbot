@@ -1,7 +1,7 @@
 #ifndef TEST_PARSER_H
 #define TEST_PARSER_H
 
-#include <boost/spirit/home/x3.hpp>
+#include <parser/parser_helpers.h>
 #include <iostream>
 
 namespace x3 = boost::spirit::x3;

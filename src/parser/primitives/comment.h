@@ -1,6 +1,7 @@
 #pragma once
 #ifndef SPIMBOT_PARSER_COMMENT_H
 #define SPIMBOT_PARSER_COMMENT_H
+
 #include "../parser_helpers.h"
 
 namespace mips_parser {

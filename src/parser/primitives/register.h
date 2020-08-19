@@ -74,8 +74,8 @@ struct FloatRegister : x3::symbols<int> {
     }
 };
 
-const auto fp_register_ = FloatRegister{}; // TODO: Make keywords!
-const auto register_ = GeneralRegister{}; // TODO: Make keywords!
+const auto fp_register_ = FloatRegister{};  // TODO: Make keywords!
+const auto register_ = GeneralRegister{};   // TODO: Make keywords!
 
 }  // namespace mips_parser
 #endif

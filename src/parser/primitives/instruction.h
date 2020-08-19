@@ -41,9 +41,6 @@ enum InstructionType {
     NOARG_TYPE_INST = 42,
 };
 
-/* Information on each keyword token that can be read by spim.	Must be
-   sorted in alphabetical order. */
-
 struct Operation {
     std::string name;
     InstructionType type;
@@ -51,7 +48,7 @@ struct Operation {
 };
 
 const std::unordered_map<std::string, Operation> opcodes = {
-    {"abs", {"abs", PSEUDO_OP, (unsigned) -1}},
+    {"abs", {"abs", PSEUDO_OP, (unsigned)-1}},
     {"abs.d", {"abs.d", FP_R2ds_TYPE_INST, 0x46200005}},
     {"abs.ps", {"abs.ps", FP_R2ds_TYPE_INST, 0x46600005}}, /* MIPS32 Rev 2 */
     {"abs.s", {"abs.s", FP_R2ds_TYPE_INST, 0x46000005}},
@@ -69,8 +66,8 @@ const std::unordered_map<std::string, Operation> opcodes = {
     {"and", {"and", R3_TYPE_INST, 0x00000024}},
     {"andi", {"andi", I2_TYPE_INST, 0x30000000}},
 
-    {"b", {"b", PSEUDO_OP, (unsigned) -1}},
-    {"bal", {"bal", PSEUDO_OP, (unsigned) -1}},
+    {"b", {"b", PSEUDO_OP, (unsigned)-1}},
+    {"bal", {"bal", PSEUDO_OP, (unsigned)-1}},
 
     {"bc1f", {"bc1f", BC_TYPE_INST, 0x45000000}},
     {"bc1fl", {"bc1fl", BC_TYPE_INST, 0x45020000}}, /* MIPS32 */
@@ -84,30 +81,30 @@ const std::unordered_map<std::string, Operation> opcodes = {
 
     {"beq", {"beq", B2_TYPE_INST, 0x10000000}},
     {"beql", {"beql", B2_TYPE_INST, 0x50000000}}, /* MIPS32 */
-    {"beqz", {"beqz", PSEUDO_OP, (unsigned) -1}},
-    {"bge", {"bge", PSEUDO_OP, (unsigned) -1}},
-    {"bgeu", {"bgeu", PSEUDO_OP, (unsigned) -1}},
+    {"beqz", {"beqz", PSEUDO_OP, (unsigned)-1}},
+    {"bge", {"bge", PSEUDO_OP, (unsigned)-1}},
+    {"bgeu", {"bgeu", PSEUDO_OP, (unsigned)-1}},
     {"bgez", {"bgez", B1_TYPE_INST, 0x04010000}},
     {"bgezal", {"bgezal", B1_TYPE_INST, 0x04110000}},
     {"bgezall", {"bgezall", B1_TYPE_INST, 0x04130000}}, /* MIPS32 */
     {"bgezl", {"bgezl", B1_TYPE_INST, 0x04030000}},     /* MIPS32 */
-    {"bgt", {"bgt", PSEUDO_OP, (unsigned) -1}},
-    {"bgtu", {"bgtu", PSEUDO_OP, (unsigned) -1}},
+    {"bgt", {"bgt", PSEUDO_OP, (unsigned)-1}},
+    {"bgtu", {"bgtu", PSEUDO_OP, (unsigned)-1}},
     {"bgtz", {"bgtz", B1_TYPE_INST, 0x1c000000}},
     {"bgtzl", {"bgtzl", B1_TYPE_INST, 0x5c000000}}, /* MIPS32 */
-    {"ble", {"ble", PSEUDO_OP, (unsigned) -1}},
-    {"bleu", {"bleu", PSEUDO_OP, (unsigned) -1}},
+    {"ble", {"ble", PSEUDO_OP, (unsigned)-1}},
+    {"bleu", {"bleu", PSEUDO_OP, (unsigned)-1}},
     {"blez", {"blez", B1_TYPE_INST, 0x18000000}},
     {"blezl", {"blezl", B1_TYPE_INST, 0x58000000}}, /* MIPS32 */
-    {"blt", {"blt", PSEUDO_OP, (unsigned) -1}},
-    {"bltu", {"bltu", PSEUDO_OP, (unsigned) -1}},
+    {"blt", {"blt", PSEUDO_OP, (unsigned)-1}},
+    {"bltu", {"bltu", PSEUDO_OP, (unsigned)-1}},
     {"bltz", {"bltz", B1_TYPE_INST, 0x04000000}},
     {"bltzal", {"bltzal", B1_TYPE_INST, 0x04100000}},
     {"bltzall", {"bltzall", B1_TYPE_INST, 0x04120000}}, /* MIPS32 */
     {"bltzl", {"bltzl", B1_TYPE_INST, 0x04020000}},     /* MIPS32 */
     {"bne", {"bne", B2_TYPE_INST, 0x14000000}},
     {"bnel", {"bnel", B2_TYPE_INST, 0x54000000}}, /* MIPS32 */
-    {"bnez", {"bnez", PSEUDO_OP, (unsigned) -1}},
+    {"bnez", {"bnez", PSEUDO_OP, (unsigned)-1}},
 
     {"break", {"break", NOARG_TYPE_INST, 0x0000000d}},
 
@@ -222,22 +219,22 @@ const std::unordered_map<std::string, Operation> opcodes = {
     {"jr", {"jr", R1s_TYPE_INST, 0x00000008}},
     {"jr.hb", {"jr.hb", R1s_TYPE_INST, 0x00000408}}, /* MIPS32 Rev 2 */
 
-    {"l.d", {"l.d", PSEUDO_OP, (unsigned) -1}},
-    {"l.s", {"l.s", PSEUDO_OP, (unsigned) -1}},
+    {"l.d", {"l.d", PSEUDO_OP, (unsigned)-1}},
+    {"l.s", {"l.s", PSEUDO_OP, (unsigned)-1}},
 
-    {"la", {"la", PSEUDO_OP, (unsigned) -1}},
+    {"la", {"la", PSEUDO_OP, (unsigned)-1}},
     {"lb", {"lb", I2a_TYPE_INST, 0x80000000}},
     {"lbu", {"lbu", I2a_TYPE_INST, 0x90000000}},
-    {"ld", {"ld", PSEUDO_OP, (unsigned) -1}},
+    {"ld", {"ld", PSEUDO_OP, (unsigned)-1}},
     {"ldc1", {"ldc1", FP_I2a_TYPE_INST, 0xd4000000}},  /* MIPS32 */
     {"ldc2", {"ldc2", I2a_TYPE_INST, 0xd8000000}},     /* MIPS32 */
     {"ldxc1", {"ldxc1", FP_R3_TYPE_INST, 0x4c000001}}, /* MIPS32 Rev 2 */
     {"lh", {"lh", I2a_TYPE_INST, 0x84000000}},
     {"lhu", {"lhu", I2a_TYPE_INST, 0x94000000}},
 
-    {"li", {"li", PSEUDO_OP, (unsigned) -1}},
-    {"li.d", {"li.d", PSEUDO_OP, (unsigned) -1}},
-    {"li.s", {"li.s", PSEUDO_OP, (unsigned) -1}},
+    {"li", {"li", PSEUDO_OP, (unsigned)-1}},
+    {"li.d", {"li.d", PSEUDO_OP, (unsigned)-1}},
+    {"li.s", {"li.s", PSEUDO_OP, (unsigned)-1}},
 
     {"ll", {"ll", I2a_TYPE_INST, 0xc0000000}}, /* MIPS32 */
 
@@ -259,7 +256,7 @@ const std::unordered_map<std::string, Operation> opcodes = {
 
     {"mfc0", {"mfc0", R2td_TYPE_INST, 0x40000000}},
     {"mfc1", {"mfc1", FP_R2ts_TYPE_INST, 0x44000000}},
-    {"mfc1.d", {"mfc1.d", PSEUDO_OP, (unsigned) -1}},
+    {"mfc1.d", {"mfc1.d", PSEUDO_OP, (unsigned)-1}},
     {"mfc2", {"mfc2", R2td_TYPE_INST, 0x48000000}},
     {"mfhc1", {"mfhc1", FP_R2ts_TYPE_INST, 0x44600000}}, /* MIPS32 Rev 2 */
     {"mfhc2", {"mfhc2", R2td_TYPE_INST, 0x48600000}},    /* MIPS32 Rev 2 */
@@ -269,7 +266,7 @@ const std::unordered_map<std::string, Operation> opcodes = {
     {"mov.d", {"mov.d", FP_R2ds_TYPE_INST, 0x46200006}},
     {"mov.ps", {"mov.ps", FP_R2ds_TYPE_INST, 0x46c00006}}, /* MIPS32 Rev 2 */
     {"mov.s", {"mov.s", FP_R2ds_TYPE_INST, 0x46000006}},
-    {"move", {"move", PSEUDO_OP, (unsigned) -1}},
+    {"move", {"move", PSEUDO_OP, (unsigned)-1}},
 
     {"movf", {"movf", MOVC_TYPE_INST, 0x00000001}},          /* MIPS32 */
     {"movf.d", {"movf.d", FP_MOVC_TYPE_INST, 0x46200011}},   /* MIPS32 */
@@ -299,7 +296,7 @@ const std::unordered_map<std::string, Operation> opcodes = {
 
     {"mtc0", {"mtc0", R2td_TYPE_INST, 0x40800000}},
     {"mtc1", {"mtc1", FP_R2ts_TYPE_INST, 0x44800000}},
-    {"mtc1.d", {"mtc1.d", PSEUDO_OP, (unsigned) -1}},
+    {"mtc1.d", {"mtc1.d", PSEUDO_OP, (unsigned)-1}},
     {"mtc2", {"mtc2", R2td_TYPE_INST, 0x48800000}},
     {"mthc1", {"mthc1", FP_R2ts_TYPE_INST, 0x44e00000}}, /* MIPS32 Rev 2 */
     {"mthc2", {"mthc2", R2td_TYPE_INST, 0x48e00000}},    /* MIPS32 Rev 2 */
@@ -311,16 +308,16 @@ const std::unordered_map<std::string, Operation> opcodes = {
     {"mul.d", {"mul.d", FP_R3_TYPE_INST, 0x46200002}},
     {"mul.ps", {"mul.ps", FP_R3_TYPE_INST, 0x46c00002}}, /* MIPS32 Rev 2 */
     {"mul.s", {"mul.s", FP_R3_TYPE_INST, 0x46000002}},
-    {"mulo", {"mulo", PSEUDO_OP, (unsigned) -1}},
-    {"mulou", {"mulou", PSEUDO_OP, (unsigned) -1}},
+    {"mulo", {"mulo", PSEUDO_OP, (unsigned)-1}},
+    {"mulou", {"mulou", PSEUDO_OP, (unsigned)-1}},
     {"mult", {"mult", R2st_TYPE_INST, 0x00000018}},
     {"multu", {"multu", R2st_TYPE_INST, 0x00000019}},
 
-    {"neg", {"neg", PSEUDO_OP, (unsigned) -1}},
+    {"neg", {"neg", PSEUDO_OP, (unsigned)-1}},
     {"neg.d", {"neg.d", FP_R2ds_TYPE_INST, 0x46200007}},
     {"neg.ps", {"neg.ps", FP_R2ds_TYPE_INST, 0x46c00007}}, /* MIPS32 Rev 2 */
     {"neg.s", {"neg.s", FP_R2ds_TYPE_INST, 0x46000007}},
-    {"negu", {"negu", PSEUDO_OP, (unsigned) -1}},
+    {"negu", {"negu", PSEUDO_OP, (unsigned)-1}},
 
     {"nmadd.d", {"nmadd.d", FP_R4_TYPE_INST, 0x4c000031}},   /* MIPS32 Rev 2 */
     {"nmadd.ps", {"nmadd.ps", FP_R4_TYPE_INST, 0x4c000036}}, /* MIPS32 Rev 2 */
@@ -329,9 +326,9 @@ const std::unordered_map<std::string, Operation> opcodes = {
     {"nmsub.ps", {"nmsub.ps", FP_R4_TYPE_INST, 0x4c00003e}}, /* MIPS32 Rev 2 */
     {"nmsub.s", {"nmsub.s", FP_R4_TYPE_INST, 0x4c000038}},   /* MIPS32 Rev 2 */
 
-    {"nop", {"nop", PSEUDO_OP, (unsigned) -1}},
+    {"nop", {"nop", PSEUDO_OP, (unsigned)-1}},
     {"nor", {"nor", R3_TYPE_INST, 0x00000027}},
-    {"not", {"not", PSEUDO_OP, (unsigned) -1}},
+    {"not", {"not", PSEUDO_OP, (unsigned)-1}},
     {"or", {"or", R3_TYPE_INST, 0x00000025}},
     {"ori", {"ori", I2_TYPE_INST, 0x34000000}},
 
@@ -349,13 +346,13 @@ const std::unordered_map<std::string, Operation> opcodes = {
     {"recip.d", {"recip.d", FP_R2ds_TYPE_INST, 0x46200015}}, /* MIPS32 Rev 2 */
     {"recip.s", {"recip.s", FP_R2ds_TYPE_INST, 0x46000015}}, /* MIPS32 Rev 2 */
 
-    {"rem", {"rem", PSEUDO_OP, (unsigned) -1}},
-    {"remu", {"remu", PSEUDO_OP, (unsigned) -1}},
+    {"rem", {"rem", PSEUDO_OP, (unsigned)-1}},
+    {"remu", {"remu", PSEUDO_OP, (unsigned)-1}},
 
     {"rfe", {"rfe", NOARG_TYPE_INST, 0x42000010}},
 
-    {"rol", {"rol", PSEUDO_OP, (unsigned) -1}},
-    {"ror", {"ror", PSEUDO_OP, (unsigned) -1}},
+    {"rol", {"rol", PSEUDO_OP, (unsigned)-1}},
+    {"ror", {"ror", PSEUDO_OP, (unsigned)-1}},
     {"rotr", {"rotr", R2sh_TYPE_INST, 0x00200002}},   /* MIPS32 Rev 2 */
     {"rotrv", {"rotrv", R2sh_TYPE_INST, 0x00200003}}, /* MIPS32 Rev 2 */
 
@@ -367,12 +364,12 @@ const std::unordered_map<std::string, Operation> opcodes = {
     {"rsqrt.d", {"rsqrt.d", FP_R2ds_TYPE_INST, 0x46200016}}, /* MIPS32 Rev 2 */
     {"rsqrt.s", {"rsqrt.s", FP_R2ds_TYPE_INST, 0x46000016}}, /* MIPS32 Rev 2 */
 
-    {"s.d", {"s.d", PSEUDO_OP, (unsigned) -1}},
-    {"s.s", {"s.s", PSEUDO_OP, (unsigned) -1}},
+    {"s.d", {"s.d", PSEUDO_OP, (unsigned)-1}},
+    {"s.s", {"s.s", PSEUDO_OP, (unsigned)-1}},
 
     {"sb", {"sb", I2a_TYPE_INST, 0xa0000000}},
     {"sc", {"sc", I2a_TYPE_INST, 0xe0000000}}, /* MIPS32 */
-    {"sd", {"sd", PSEUDO_OP, (unsigned) -1}},
+    {"sd", {"sd", PSEUDO_OP, (unsigned)-1}},
     {"sdbbp", {"sdbbp", NOARG_TYPE_INST, 0x7000003f}}, /* MIPS32 Rev 2*/
     {"sdc1", {"sdc1", FP_I2a_TYPE_INST, 0xf4000000}},  /* MIPS32 */
     {"sdc2", {"sdc2", I2a_TYPE_INST, 0xf8000000}},     /* MIPS32 */
@@ -380,15 +377,15 @@ const std::unordered_map<std::string, Operation> opcodes = {
 
     {"seb", {"seb", R2td_TYPE_INST, 0x7c000420}}, /* MIPS32 Rev 2 */
     {"seh", {"seh", R2td_TYPE_INST, 0x7c000620}}, /* MIPS32 Rev 2 */
-    {"seq", {"seq", PSEUDO_OP, (unsigned) -1}},
-    {"sge", {"sge", PSEUDO_OP, (unsigned) -1}},
-    {"sgeu", {"sgeu", PSEUDO_OP, (unsigned) -1}},
-    {"sgt", {"sgt", PSEUDO_OP, (unsigned) -1}},
-    {"sgtu", {"sgtu", PSEUDO_OP, (unsigned) -1}},
+    {"seq", {"seq", PSEUDO_OP, (unsigned)-1}},
+    {"sge", {"sge", PSEUDO_OP, (unsigned)-1}},
+    {"sgeu", {"sgeu", PSEUDO_OP, (unsigned)-1}},
+    {"sgt", {"sgt", PSEUDO_OP, (unsigned)-1}},
+    {"sgtu", {"sgtu", PSEUDO_OP, (unsigned)-1}},
 
     {"sh", {"sh", I2a_TYPE_INST, 0xa4000000}},
-    {"sle", {"sle", PSEUDO_OP, (unsigned) -1}},
-    {"sleu", {"sleu", PSEUDO_OP, (unsigned) -1}},
+    {"sle", {"sle", PSEUDO_OP, (unsigned)-1}},
+    {"sleu", {"sleu", PSEUDO_OP, (unsigned)-1}},
     {"sll", {"sll", R2sh_TYPE_INST, 0x00000000}},
     {"sllv", {"sllv", R3sh_TYPE_INST, 0x00000004}},
 
@@ -396,7 +393,7 @@ const std::unordered_map<std::string, Operation> opcodes = {
     {"slti", {"slti", I2_TYPE_INST, 0x28000000}},
     {"sltiu", {"sltiu", I2_TYPE_INST, 0x2c000000}},
     {"sltu", {"sltu", R3_TYPE_INST, 0x0000002b}},
-    {"sne", {"sne", PSEUDO_OP, (unsigned) -1}},
+    {"sne", {"sne", PSEUDO_OP, (unsigned)-1}},
 
     {"sqrt.d", {"sqrt.d", FP_R2ds_TYPE_INST, 0x46200004}}, /* MIPS32 */
     {"sqrt.s", {"sqrt.s", FP_R2ds_TYPE_INST, 0x46000004}}, /* MIPS32 */
@@ -451,11 +448,11 @@ const std::unordered_map<std::string, Operation> opcodes = {
     {"trunc.w.d", {"trunc.w.d", FP_R2ds_TYPE_INST, 0x4620000d}}, /* MIPS32 */
     {"trunc.w.s", {"trunc.w.s", FP_R2ds_TYPE_INST, 0x4600000d}}, /* MIPS32 */
 
-    {"ulh", {"ulh", PSEUDO_OP, (unsigned) -1}},
-    {"ulhu", {"ulhu", PSEUDO_OP, (unsigned) -1}},
-    {"ulw", {"ulw", PSEUDO_OP, (unsigned) -1}},
-    {"ush", {"ush", PSEUDO_OP, (unsigned) -1}},
-    {"usw", {"usw", PSEUDO_OP, (unsigned) -1}},
+    {"ulh", {"ulh", PSEUDO_OP, (unsigned)-1}},
+    {"ulhu", {"ulhu", PSEUDO_OP, (unsigned)-1}},
+    {"ulw", {"ulw", PSEUDO_OP, (unsigned)-1}},
+    {"ush", {"ush", PSEUDO_OP, (unsigned)-1}},
+    {"usw", {"usw", PSEUDO_OP, (unsigned)-1}},
 
     {"wrpgpr", {"wrpgpr", R2td_TYPE_INST, 0x41c00000}}, /* MIPS32 Rev 2 */
     {"wsbh", {"wsbh", R2td_TYPE_INST, 0x7c0000a0}},     /* MIPS32 Rev 2 */
