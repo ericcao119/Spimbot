@@ -14,13 +14,6 @@
 namespace mips_parser {
 namespace x3 = boost::spirit::x3;
 
-/**
- * Identifier character sets.
- */
-const auto first_ident_ = char_("a-zA-Z$");
-const auto ident_ = char_("a-zA-Z0-9$");
-
-
 /* Categories of keywords */
 
 /**
@@ -54,7 +47,6 @@ const auto REG = to_keyword(register_);
 const auto RESERVED = lexeme[DEFAULT_KEYWORDS >> !ident_];
 const auto BARE_MACHINE_RESERVED = lexeme[DEFAULT_KEYWORDS >> !ident_];
 
-template <typename T> static auto as = [](auto p) { return x3::rule<struct tag, T> {"as"} = p; };
 const auto IDENT = as<std::string>(lexeme[(first_ident_ >> *ident_) - (RESERVED | x3::eol | x3::eoi)]);
 const auto BARE_MACHINE_IDENT = as<std::string>(lexeme[(first_ident_ >> *ident_) - (BARE_MACHINE_RESERVED | x3::eol | x3::eoi)]);
 

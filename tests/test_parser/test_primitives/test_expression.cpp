@@ -1,27 +1,10 @@
 #include <catch2/catch.hpp>
 #include <unordered_map>
 
+#include "../table.h"
 #include "../test_parser.h"
 #include "parser/expression/expression.h"
 #include "parser/skipper.h"
-
-const std::unordered_map<std::string, uint32_t> variable_table = {
-    {"a", 1},
-    {"ab", 2},
-    {"a0", 3},
-
-    // hex strings
-    {"deadbeef", 0xdeadbeef},
-    {"deadc0de", 0xdeadc0de},
-    {"ffffffff", 0xffffffff},
-
-    // Small ints
-    {"one", 1},
-    {"two", 2},
-    {"three", 3},
-};
-
-uint32_t lookup(const std::string& str) { return variable_table.at(str); }
 
 template <typename P>
 uint32_t eval_expr(char const* input, P const& p, bool full_match = true) {
@@ -116,12 +99,10 @@ TEST_CASE("Expression parsing", "[parser][expressions]") {
         REQUIRE_THROWS(eval_expr("(0b10101 | 0b1010", expression));
     }
 
-
     SECTION("Ordered of Operations") {
         REQUIRE(eval_expr("1 & 2 * 3 | +4 + ~5 - 1", expression) == (uint32_t)-3);
         REQUIRE(eval_expr("(1 & (2 * 3 | +4) + ~5) - 1", expression) == (uint32_t)-1);
     }
-
 }
 
 // int main() {

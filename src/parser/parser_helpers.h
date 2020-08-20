@@ -19,19 +19,28 @@ namespace mips_parser {
 namespace x3 = boost::spirit::x3;
 using namespace x3;
 
+/**
+ * Identifier character sets.
+ */
+const auto first_ident_ = char_("a-zA-Z$");
+const auto ident_ = char_("a-zA-Z0-9$");
+
 // Helper lambdas
-auto make_keyword = [](std::string kw) { return lexeme[x3::lit(kw) >> !alnum]; };
-auto to_keyword = [](auto kw) { return lexeme[kw >> !alnum]; };
+auto make_keyword = [](std::string kw) { return lexeme[x3::lit(kw) >> !ident_]; };
+auto to_keyword = [](auto kw) { return lexeme[kw >> !ident_]; };
+
+template <typename T> static auto as = [](auto p) { return x3::rule<struct tag, T> {"as"} = p; };
 
 /**
  * Quoted String parser. Note that we do not handle \0.
  */
-const auto QUOTE_STRING =
+const x3::rule<class quote_string_rule, std::string> QUOTE_STRING = "quote string rule";
+const auto QUOTE_STRING_def =
     x3::lexeme['"' > *("\\n" >> x3::attr('\n') | "\\b" >> x3::attr('\b') | "\\f" >> x3::attr('\f') |
                        "\\t" >> x3::attr('\t') | "\\v" >> x3::attr('\v') | "\\r" >> x3::attr('\r') |
                        "\\n" >> x3::attr('\n') | "\\" >> x3::char_("\"\\") | "\\" >> x3::int_parser<char, 8, 1, 3>() |
                        "\\x" >> x3::int_parser<char, 16, 2, 2>() | ~x3::char_('"')) > '"'];
-
+BOOST_SPIRIT_DEFINE(QUOTE_STRING)
 }  // namespace mips_parser
 
 #endif
