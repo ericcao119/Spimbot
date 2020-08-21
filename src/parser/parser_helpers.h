@@ -22,14 +22,30 @@ using namespace x3;
 /**
  * Identifier character sets.
  */
-const auto first_ident_ = char_("a-zA-Z$");
-const auto ident_ = char_("a-zA-Z0-9$");
+const auto first_ident_ = char_("a-zA-Z$_");
+const auto ident_ = char_("a-zA-Z0-9$_");
+
+// Helper
+const auto unsigned_ = x3::lexeme[("0x" > hex)] | x3::lexeme[("0b" > bin)] | uint_;
 
 // Helper lambdas
-auto make_keyword = [](std::string kw) { return lexeme[x3::lit(kw) >> !ident_]; };
-auto to_keyword = [](auto kw) { return lexeme[kw >> !ident_]; };
+const auto make_keyword = [](std::string kw) { return lexeme[x3::lit(kw) >> !ident_]; };
+const auto to_keyword = [](auto kw) { return lexeme[kw >> !ident_]; };
 
-template <typename T> static auto as = [](auto p) { return x3::rule<struct tag, T> {"as"} = p; };
+/**
+ * Ensures there is space after the current keyword.
+ */
+struct blank_after_gen {
+    template<typename Subject>
+    auto operator[](const Subject& subject) const {
+        return lexeme[subject >> x3::omit[x3::blank]];
+    }
+};
+
+const auto blank_after = blank_after_gen{};
+
+template <typename T>
+static auto as = [](auto p) { return x3::rule<struct tag, T>{"as"} = p; };
 
 /**
  * Quoted String parser. Note that we do not handle \0.

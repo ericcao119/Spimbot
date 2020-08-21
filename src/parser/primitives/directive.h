@@ -22,10 +22,8 @@ const x3::rule<class byte_literal_rule, client::ast::ByteDir> BYTE_RULE = "byte 
 const x3::rule<class comm_rule, client::ast::CommDir> COMM_RULE = "comm rule";
 const x3::rule<class data_rule, client::ast::DataDir> DATA_RULE = "data rule";
 const x3::rule<class kdata_rule, client::ast::KDataDir> KDATA_RULE = "kdata rule";
-
 const x3::rule<class double_repeat_rule, client::ast::DoubleRepeatDir> DOUBLE_REPEAT_RULE = "double repeat rule";
 const x3::rule<class double_rule, client::ast::DoubleDir> DOUBLE_RULE = "double rule";
-
 const x3::rule<class end_rule, client::ast::EndDir> END_RULE = "end rule";
 const x3::rule<class endb_rule, client::ast::EndbDir> ENDB_RULE = "endb rule";
 const x3::rule<class endr_rule, client::ast::EndrDir> ENDR_RULE = "endr rule";
@@ -34,10 +32,12 @@ const x3::rule<class extern_rule, client::ast::ExternDir> EXTERN_RULE = "extern 
 const x3::rule<class err_rule, client::ast::ErrDir> ERR_RULE = "err rule";
 const x3::rule<class file_rule, client::ast::FileDir> FILE_RULE = "file rule";
 const x3::rule<class float_rule, client::ast::FloatDir> FLOAT_RULE = "float rule";
+const x3::rule<class float_repeat_rule, client::ast::FloatRepeatDir> FLOAT_REPEAT_RULE = "float repeat rule";
 const x3::rule<class fmask_rule, client::ast::FmaskDir> FMASK_RULE = "fmask rule";
 const x3::rule<class frame_rule, client::ast::FrameDir> FRAME_RULE = "frame rule";
 const x3::rule<class global_rule, client::ast::GlobalDir> GLOBAL_RULE = "global rule";
 const x3::rule<class half_rule, client::ast::HalfDir> HALF_RULE = "half rule";
+const x3::rule<class half_repeat_rule, client::ast::HalfRepeatDir> HALF_REPEAT_RULE = "half repeat rule";
 const x3::rule<class label_rule, client::ast::LabelDir> LABEL_RULE = "label rule";
 const x3::rule<class lcomm_rule, client::ast::LcommDir> LCOMM_RULE = "lcomm rule";
 const x3::rule<class livereg_rule, client::ast::LiveregDir> LIVEREG_RULE = "livereg rule";
@@ -48,25 +48,27 @@ const x3::rule<class option_rule, client::ast::OptionDir> OPTIONS_RULE = "option
 const x3::rule<class repeat_rule, client::ast::RepeatDir> REPEAT_RULE = "repeat rule";
 const x3::rule<class rdata_rule, client::ast::RDataDir> RDATA_RULE = "rdata rule";
 const x3::rule<class sdata_rule, client::ast::SDataDir> SDATA_RULE = "sdata rule";
+
 const x3::rule<class set_rule, client::ast::SetDir> SET_RULE = "set rule";
 const x3::rule<class space_rule, client::ast::SpaceDir> SPACE_RULE = "space rule";
 const x3::rule<class struct_rule, client::ast::StructDir> STRUCT_RULE = "struct rule";
+
 const x3::rule<class text_rule, client::ast::TextDir> TEXT_RULE = "text rule";
 const x3::rule<class ktext_rule, client::ast::KTextDir> KTEXT_RULE = "ktext rule";
 const x3::rule<class verstamp_rule, client::ast::VerstampDir> VERSTAMP_RULE = "verstamp rule";
 const x3::rule<class vreg_rule, client::ast::VregDir> VREG_RULE = "vreg rule";
 const x3::rule<class word_rule, client::ast::WordDir> WORD_RULE = "word rule";
+const x3::rule<class word_repeat_rule, client::ast::WordRepeatDir> WORD_REPEAT_RULE = "word repeat rule";
 
 /* Rule definitions */
 
-// const auto ASCII_RULE_def = ASCII_DIR_KW;
-
 const auto ASM_DIRECTIVE_def =
     ALIAS_RULE | ALIGN_RULE | ASCII_RULE | ASCIIZ_RULE | ASM0_RULE | BNGB_RULE | BYTE_REPEAT_RULE | BYTE_RULE |
-    COMM_RULE | DATA_RULE | KDATA_RULE | DOUBLE_REPEAT_RULE | DOUBLE_RULE;/* | END_RULE | ENDB_RULE | ENDR_RULE | ENT_RULE | EXTERN_RULE | ERR_RULE | FILE_RULE |
-    FLOAT_RULE | FMASK_RULE | FRAME_RULE | GLOBAL_RULE | HALF_RULE | LABEL_RULE | LCOMM_RULE | LIVEREG_RULE | LOC_RULE |
-    MASK_RULE | NOALIAS_RULE | OPTIONS_RULE | REPEAT_RULE | RDATA_RULE | SDATA_RULE | SET_RULE | SPACE_RULE |
-    STRUCT_RULE | TEXT_RULE | KTEXT_RULE | VERSTAMP_RULE | VREG_RULE | WORD_RULE; */
+    COMM_RULE | DATA_RULE | KDATA_RULE | DOUBLE_REPEAT_RULE | DOUBLE_RULE | END_RULE | ENDB_RULE | ENDR_RULE |
+    ENT_RULE | EXTERN_RULE | ERR_RULE | FILE_RULE | FLOAT_REPEAT_RULE | FLOAT_RULE | FMASK_RULE | FRAME_RULE |
+    GLOBAL_RULE | HALF_REPEAT_RULE | HALF_RULE | LABEL_RULE | LCOMM_RULE | LIVEREG_RULE | LOC_RULE | MASK_RULE |
+    NOALIAS_RULE | OPTIONS_RULE | REPEAT_RULE | RDATA_RULE | SDATA_RULE | SET_RULE | SPACE_RULE | STRUCT_RULE |
+    TEXT_RULE | KTEXT_RULE | VERSTAMP_RULE | VREG_RULE | WORD_REPEAT_RULE | WORD_RULE;
 
 const auto ALIAS_RULE_def = ALIAS_DIR_KW >> REG >> REG;
 const auto ALIGN_RULE_def = ALIGN_DIR_KW >> expression;
@@ -74,53 +76,54 @@ const auto ASCII_RULE_def = ASCII_DIR_KW >> (QUOTE_STRING % ",");
 const auto ASCIIZ_RULE_def = ASCIIZ_DIR_KW >> (QUOTE_STRING % ",");
 const auto ASM0_RULE_def = ASM0_DIR_KW;
 const auto BNGB_RULE_def = BGNB_DIR_KW >> uint_;
-const auto BYTE_REPEAT_RULE_def = BYTE_DIR_KW >> REPEAT_EXPR_LST;        // >> EXPR_LST;
-const auto BYTE_RULE_def = BYTE_DIR_KW >> EXPR_LST;  // >> EXPR_LST;
+const auto BYTE_REPEAT_RULE_def = BYTE_DIR_KW >> REPEAT_EXPR_LST;
+const auto BYTE_RULE_def = BYTE_DIR_KW >> EXPR_LST;
 const auto COMM_RULE_def = COMM_DIR_KW >> IDENT >> "," >> expression;
-const auto DATA_RULE_def = DATA_DIR_KW >> -(x3::lexeme[("0x" > hex)] | x3::lexeme[("0b" > bin)] | uint_);
-const auto KDATA_RULE_def = KDATA_DIR_KW >> -(x3::lexeme[("0x" > hex)] | x3::lexeme[("0b" > bin)] | uint_);
-
-
+const auto DATA_RULE_def = DATA_DIR_KW >> -(unsigned_);
+const auto KDATA_RULE_def = KDATA_DIR_KW >> -(unsigned_);
 const auto DOUBLE_RULE_def = DOUBLE_DIR_KW >> FP_EXPR_LST;
 const auto DOUBLE_REPEAT_RULE_def = DOUBLE_DIR_KW >> FP_REPEAT_EXPR_LST;
-
 const auto END_RULE_def = END_DIR_KW >> -(IDENT);
-const auto ENDB_RULE_def = ENDB_DIR_KW >> -(uint_);
+const auto ENDB_RULE_def = ENDB_DIR_KW >> uint_;
 const auto ENDR_RULE_def = ENDR_DIR_KW;
-const auto ENT_RULE_def = ENT_DIR_KW >> IDENT >> uint_;
-const auto EXTERN_RULE_def = EXTERN_DIR_KW >> IDENT >> expression;
+const auto ENT_RULE_def = ENT_DIR_KW >> IDENT >> -uint_;
+const auto EXTERN_RULE_def = EXTERN_DIR_KW >> IDENT >> -uint_;
 const auto ERR_RULE_def = ERR_DIR_KW;
-const auto FILE_RULE_def = FILE_DIR_KW >> uint_ >> QUOTE_STRING;
-const auto FLOAT_RULE_def = FLOAT_DIR_KW >> *(float_);
-const auto FMASK_RULE_def = FMASK_DIR_KW >> uint_ >> uint_;
-const auto FRAME_RULE_def = FRAME_DIR_KW >> REG >> uint_ >> REG;
+const auto FILE_RULE_def = FILE_DIR_KW >> blank_after[uint_] >> QUOTE_STRING;
+const auto FLOAT_RULE_def = FLOAT_DIR_KW >> FP_EXPR_LST;
+const auto FLOAT_REPEAT_RULE_def = FLOAT_DIR_KW >> FP_REPEAT_EXPR_LST;
+const auto FMASK_RULE_def = FMASK_DIR_KW >> blank_after[unsigned_] >> uint_;
+const auto FRAME_RULE_def = FRAME_DIR_KW >> REG >> blank_after[uint_] >> REG;
 const auto GLOBAL_RULE_def = GLOBAL_DIR_KW >> IDENT;
-const auto HALF_RULE_def = HALF_DIR_KW >> *(expression);
+const auto HALF_REPEAT_RULE_def = HALF_DIR_KW >> REPEAT_EXPR_LST;
+const auto HALF_RULE_def = HALF_DIR_KW >> EXPR_LST;
 const auto LABEL_RULE_def = LABEL_DIR_KW >> IDENT;
 const auto LCOMM_RULE_def = LCOMM_DIR_KW >> IDENT >> expression;
-const auto LIVEREG_RULE_def = LIVEREG_DIR_KW >> uint_ >> uint_;
-const auto LOC_RULE_def = LOC_DIR_KW >> uint_ >> uint_;
-const auto MASK_RULE_def = MASK_DIR_KW >> uint_ >> uint_;
+const auto LIVEREG_RULE_def = LIVEREG_DIR_KW >> blank_after[unsigned_] >> unsigned_;
+const auto LOC_RULE_def = LOC_DIR_KW >> blank_after[uint_] >> uint_;
+const auto MASK_RULE_def = MASK_DIR_KW >> blank_after[unsigned_] >> uint_;
 const auto NOALIAS_RULE_def = NOALIAS_DIR_KW >> REG >> REG;
 const auto OPTIONS_RULE_def = OPTIONS_DIR_KW >> IDENT;  // ?
 const auto REPEAT_RULE_def = REPEAT_DIR_KW >> expression;
-const auto RDATA_RULE_def = RDATA_DIR_KW >> -(uint_);
-const auto SDATA_RULE_def = SDATA_DIR_KW >> -(uint_);
+const auto RDATA_RULE_def = RDATA_DIR_KW >> -(unsigned_);
+const auto SDATA_RULE_def = SDATA_DIR_KW >> -(unsigned_);
 const auto SET_RULE_def = SET_DIR_KW >> IDENT;
 const auto SPACE_RULE_def = SPACE_DIR_KW >> expression;
 const auto STRUCT_RULE_def = STRUCT_DIR_KW >> expression;
-const auto TEXT_RULE_def = TEXT_DIR_KW >> -(uint_);
-const auto KTEXT_RULE_def = KTEXT_DIR_KW >> -(uint_);
-const auto VERSTAMP_RULE_def = VERSTAMP_DIR_KW >> uint_ >> uint_;
-const auto VREG_RULE_def = VREG_DIR_KW >> REG >> uint_ >> uint_;
-const auto WORD_RULE_def = WORD_DIR_KW >> *(expression);
+const auto TEXT_RULE_def = TEXT_DIR_KW >> -(unsigned_);
+const auto KTEXT_RULE_def = KTEXT_DIR_KW >> -(unsigned_);
+const auto VERSTAMP_RULE_def = VERSTAMP_DIR_KW >> blank_after[uint_] >> uint_;
+const auto VREG_RULE_def = VREG_DIR_KW >> REG >> blank_after[uint_] >> uint_;
+const auto WORD_REPEAT_RULE_def = WORD_DIR_KW >> REPEAT_EXPR_LST;
+const auto WORD_RULE_def = WORD_DIR_KW >> EXPR_LST;
 
 BOOST_SPIRIT_DEFINE(ASM_DIRECTIVE, ALIAS_RULE, ALIGN_RULE, ASCII_RULE, ASCIIZ_RULE, ASM0_RULE, BNGB_RULE,
-                    BYTE_REPEAT_RULE, BYTE_RULE, COMM_RULE, DATA_RULE, KDATA_RULE, DOUBLE_REPEAT_RULE, DOUBLE_RULE/*, END_RULE,
-                    ENDB_RULE, ENDR_RULE, ENT_RULE, EXTERN_RULE, ERR_RULE, FILE_RULE, FLOAT_RULE, FMASK_RULE,
-                    FRAME_RULE, GLOBAL_RULE, HALF_RULE, LABEL_RULE, LCOMM_RULE, LIVEREG_RULE, LOC_RULE, MASK_RULE,
-                    NOALIAS_RULE, OPTIONS_RULE, REPEAT_RULE, RDATA_RULE, SDATA_RULE, SET_RULE, SPACE_RULE, STRUCT_RULE,
-                    TEXT_RULE, KTEXT_RULE, VERSTAMP_RULE, VREG_RULE, WORD_RULE*/)
+                    BYTE_REPEAT_RULE, BYTE_RULE, COMM_RULE, DATA_RULE, KDATA_RULE, DOUBLE_REPEAT_RULE, DOUBLE_RULE,
+                    END_RULE, ENDB_RULE, ENDR_RULE, ENT_RULE, EXTERN_RULE, ERR_RULE, FILE_RULE, FLOAT_REPEAT_RULE,
+                    FLOAT_RULE, FMASK_RULE, FRAME_RULE, GLOBAL_RULE, HALF_REPEAT_RULE, HALF_RULE, LABEL_RULE,
+                    LCOMM_RULE, LIVEREG_RULE, LOC_RULE, MASK_RULE, NOALIAS_RULE, OPTIONS_RULE, REPEAT_RULE, RDATA_RULE,
+                    SDATA_RULE, SET_RULE, SPACE_RULE, STRUCT_RULE, TEXT_RULE, KTEXT_RULE, VERSTAMP_RULE, VREG_RULE,
+                    WORD_REPEAT_RULE, WORD_RULE)
 
 }  // namespace mips_parser
 // ASM_DIRECTIVE:	Y_ALIAS_DIR	Y_REG	Y_REG

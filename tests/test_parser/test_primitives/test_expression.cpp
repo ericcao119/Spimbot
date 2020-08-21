@@ -68,6 +68,7 @@ TEST_CASE("Expression parsing", "[parser][expressions]") {
         REQUIRE(eval_expr("1 * 2 / -2", expression) == (uint32_t)-1);
         REQUIRE(eval_expr("-1 * 2 / -2", expression) == (uint32_t)1);
         REQUIRE(eval_expr("-1 * -2 / -2", expression) == (uint32_t)-1);
+        REQUIRE(eval_expr("two/one", expression) == (uint32_t)2);
 
         REQUIRE_THROWS(eval_expr("2 ** -1", expression));
     }
