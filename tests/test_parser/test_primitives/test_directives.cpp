@@ -3,7 +3,7 @@
 
 #include "../table.h"
 #include "../test_parser.h"
-#include "parser/primitives/directive.h"
+#include "parser/directive/directive.h"
 #include "parser/skipper.h"
 
 using namespace client::ast;
@@ -17,7 +17,6 @@ void parse_dir(char const* input, P const& p, Directive& dir, bool full_match = 
     if (phrase_parse(f, l, p, mips_parser::default_skipper, dir) && (!full_match || (f == l))) {
         return;
     } else {
-        std::cout << std::string(f, l) << std::endl;
         throw parse_failed_exception();
     }
 }

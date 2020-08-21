@@ -4,8 +4,10 @@
 
 #include "../expression/expression.h"
 #include "../expression/expression_lst.h"
-#include "atomics.h"
-#include "keywords.h"
+#include "ast.h"
+
+// #include "atomics.h"
+// #include "keywords.h"
 
 namespace mips_parser {
 
@@ -48,11 +50,9 @@ const x3::rule<class option_rule, client::ast::OptionDir> OPTIONS_RULE = "option
 const x3::rule<class repeat_rule, client::ast::RepeatDir> REPEAT_RULE = "repeat rule";
 const x3::rule<class rdata_rule, client::ast::RDataDir> RDATA_RULE = "rdata rule";
 const x3::rule<class sdata_rule, client::ast::SDataDir> SDATA_RULE = "sdata rule";
-
 const x3::rule<class set_rule, client::ast::SetDir> SET_RULE = "set rule";
 const x3::rule<class space_rule, client::ast::SpaceDir> SPACE_RULE = "space rule";
 const x3::rule<class struct_rule, client::ast::StructDir> STRUCT_RULE = "struct rule";
-
 const x3::rule<class text_rule, client::ast::TextDir> TEXT_RULE = "text rule";
 const x3::rule<class ktext_rule, client::ast::KTextDir> KTEXT_RULE = "ktext rule";
 const x3::rule<class verstamp_rule, client::ast::VerstampDir> VERSTAMP_RULE = "verstamp rule";

@@ -6,8 +6,8 @@
 #include <string>
 #include <unordered_map>
 
+#include "../directive/symbols.h"
 #include "../parser_helpers.h"
-#include "directive_symbols.h"
 #include "instruction.h"
 #include "register.h"
 
@@ -48,11 +48,11 @@ const auto RESERVED = lexeme[DEFAULT_KEYWORDS >> !ident_];
 const auto BARE_MACHINE_RESERVED = lexeme[DEFAULT_KEYWORDS >> !ident_];
 
 const auto IDENT = as<std::string>(lexeme[(first_ident_ >> *ident_) - (RESERVED | x3::eol | x3::eoi)]);
-const auto BARE_MACHINE_IDENT = as<std::string>(lexeme[(first_ident_ >> *ident_) - (BARE_MACHINE_RESERVED | x3::eol | x3::eoi)]);
+const auto BARE_MACHINE_IDENT =
+    as<std::string>(lexeme[(first_ident_ >> *ident_) - (BARE_MACHINE_RESERVED | x3::eol | x3::eoi)]);
 
 // const auto IDENT = lexeme[+ident_ - RESERVED];
 // const auto BARE_MACHINE_IDENT = lexeme[+ident_ - BARE_MACHINE_RESERVED];
-
 
 }  // namespace mips_parser
 

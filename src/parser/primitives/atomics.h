@@ -1,5 +1,5 @@
-#include "../expression/expression.h"
 #include "../parser_helpers.h"
+#include "../expression/expression.h"
 #include "keywords.h"
 
 namespace mips_parser {
@@ -9,10 +9,9 @@ const auto ABS_ADDR = int_ | int_ >> "+" >> int_ | int_ >> "-" >> int_;
 const auto IMM32 = ABS_ADDR | x3::eps >> "(" >> ABS_ADDR >> ")" >> ">>" >> int_ | IDENT | IDENT >> "+" >> ABS_ADDR |
                    IDENT >> "-" >> ABS_ADDR;
 
-const auto ADDR = x3::eps >> "(" >> REG >> ")" | ABS_ADDR | ABS_ADDR >> '(' >> REG >> ")" |
-                  IDENT >> '(' >> REG >> ")" | IDENT >> '+' >> ABS_ADDR | ABS_ADDR >> '+' >> IDENT |
-                  IDENT >> '-' >> ABS_ADDR | IDENT >> '+' >> ABS_ADDR >> '(' >> REG >> ')' |
-                  IDENT >> '-' >> ABS_ADDR >> '(' >> REG >> ')' | IDENT;
+const auto ADDR = x3::eps >> "(" >> REG >> ")" | ABS_ADDR | ABS_ADDR >> '(' >> REG >> ")" | IDENT >> '(' >> REG >> ")" |
+                  IDENT >> '+' >> ABS_ADDR | ABS_ADDR >> '+' >> IDENT | IDENT >> '-' >> ABS_ADDR |
+                  IDENT >> '+' >> ABS_ADDR >> '(' >> REG >> ')' | IDENT >> '-' >> ABS_ADDR >> '(' >> REG >> ')' | IDENT;
 
 const auto BR_IMM32 = IMM32;
 
