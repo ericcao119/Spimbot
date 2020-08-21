@@ -76,6 +76,15 @@ struct expression : x3::position_tagged {
     std::vector<operation> rest;
 };
 
+template <class T>
+struct RepeatLst : x3::position_tagged{
+    client::ast::expression repeat_num;
+    T repeat_value;
+};
+
+template <class T>
+struct LiteralLst : x3::position_tagged, std::vector<T> {};
+
 /**
  * Dumb printing of contained expression. This does not do any work in simplifying the expression!
  *

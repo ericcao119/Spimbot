@@ -42,9 +42,5 @@ const auto STR = QUOTE_STRING | QUOTE_STRING >> ":" >> int_ | IDENT;
 // TODO: Check these for parity with old MIPS grammar
 const auto STR_LST = STR % (x3::blank | ",");
 
-const auto FP_EXPR_LST = double_ % (x3::blank | ",");
-
-const auto EXPR_LST = expression % (x3::blank | ",") | expression >> ":" >> expression;
-
 const auto OPTIONAL_ID = -IDENT;
 }  // namespace mips_parser

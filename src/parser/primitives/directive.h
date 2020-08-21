@@ -3,6 +3,7 @@
 #define SPIMBOT_PARSER_PRIMITIVES_DIRECTIVE
 
 #include "../expression/expression.h"
+#include "../expression/expression_lst.h"
 #include "atomics.h"
 #include "keywords.h"
 
@@ -16,7 +17,13 @@ const x3::rule<class ascii_rule, client::ast::AsciiDir> ASCII_RULE = "ascii rule
 const x3::rule<class asciiz_rule, client::ast::AsciizDir> ASCIIZ_RULE = "asciiz rule";
 const x3::rule<class asm0_rule, client::ast::Asm0Dir> ASM0_RULE = "asm0 rule";
 const x3::rule<class bgnb_rule, client::ast::BgnbDir> BNGB_RULE = "bngb rule";
-const x3::rule<class byte_rule, client::ast::ByteDir> BYTE_RULE = "byte rule";
+
+const x3::rule<class byte_repeat_rule, client::ast::ByteRepeatDir> BYTE_REPEAT_RULE = "byte repeat rule";
+const x3::rule<class byte_literal_rule, client::ast::ByteLiteralDir> BYTE_LITERAL_RULE = "byte literal rule";
+
+// const auto BYTE_REPEAT_RULE_def = BYTE_DIR_KW >> REPEAT_EXPR;// >> EXPR_LST;
+// const auto BYTE_LITERAL_RULE_def = BYTE_DIR_KW >> LITERAL_EXPR_LST;// >> EXPR_LST;
+
 const x3::rule<class comm_rule, client::ast::CommDir> COMM_RULE = "comm rule";
 const x3::rule<class data_rule, client::ast::DataDir> DATA_RULE = "data rule";
 const x3::rule<class kdata_rule, client::ast::KDataDir> KDATA_RULE = "kdata rule";
@@ -53,13 +60,12 @@ const x3::rule<class vreg_rule, client::ast::VregDir> VREG_RULE = "vreg rule";
 const x3::rule<class word_rule, client::ast::WordDir> WORD_RULE = "word rule";
 
 /* Rule definitions */
- 
+
 // const auto ASCII_RULE_def = ASCII_DIR_KW;
 
-
 const auto ASM_DIRECTIVE_def =
-    ALIAS_RULE | ALIGN_RULE | ASCII_RULE | ASCIIZ_RULE; /* | ASM0_RULE | BNGB_RULE | BYTE_RULE | COMM_RULE | DATA_RULE |
-    KDATA_RULE | DOUBLE_RULE | END_RULE | ENDB_RULE | ENDR_RULE | ENT_RULE | EXTERN_RULE | ERR_RULE | FILE_RULE |
+    ALIAS_RULE | ALIGN_RULE | ASCII_RULE | ASCIIZ_RULE | ASM0_RULE | BNGB_RULE | BYTE_REPEAT_RULE | BYTE_LITERAL_RULE |
+    COMM_RULE | DATA_RULE | KDATA_RULE; /* | DOUBLE_RULE | END_RULE | ENDB_RULE | ENDR_RULE | ENT_RULE | EXTERN_RULE | ERR_RULE | FILE_RULE |
     FLOAT_RULE | FMASK_RULE | FRAME_RULE | GLOBAL_RULE | HALF_RULE | LABEL_RULE | LCOMM_RULE | LIVEREG_RULE | LOC_RULE |
     MASK_RULE | NOALIAS_RULE | OPTIONS_RULE | REPEAT_RULE | RDATA_RULE | SDATA_RULE | SET_RULE | SPACE_RULE |
     STRUCT_RULE | TEXT_RULE | KTEXT_RULE | VERSTAMP_RULE | VREG_RULE | WORD_RULE; */
@@ -68,14 +74,16 @@ const auto ALIAS_RULE_def = ALIAS_DIR_KW >> REG >> REG;
 const auto ALIGN_RULE_def = ALIGN_DIR_KW >> expression;
 const auto ASCII_RULE_def = ASCII_DIR_KW >> (QUOTE_STRING % ",");
 const auto ASCIIZ_RULE_def = ASCIIZ_DIR_KW >> (QUOTE_STRING % ",");
-
-
 const auto ASM0_RULE_def = ASM0_DIR_KW;
 const auto BNGB_RULE_def = BGNB_DIR_KW >> uint_;
-const auto BYTE_RULE_def = BYTE_DIR_KW >> *(expression);
-const auto COMM_RULE_def = COMM_DIR_KW >> IDENT >> expression;
-const auto DATA_RULE_def = DATA_DIR_KW >> -(uint_);
-const auto KDATA_RULE_def = KDATA_DIR_KW >> -(uint_);
+
+const auto BYTE_REPEAT_RULE_def = BYTE_DIR_KW >> REPEAT_EXPR;        // >> EXPR_LST;
+const auto BYTE_LITERAL_RULE_def = BYTE_DIR_KW >> LITERAL_EXPR_LST;  // >> EXPR_LST;
+
+const auto COMM_RULE_def = COMM_DIR_KW >> IDENT >> "," >> expression;
+const auto DATA_RULE_def = DATA_DIR_KW >> -(x3::lexeme[("0x" > hex)] | x3::lexeme[("0b" > bin)] | uint_);
+const auto KDATA_RULE_def = KDATA_DIR_KW >> -(x3::lexeme[("0x" > hex)] | x3::lexeme[("0b" > bin)] | uint_);
+
 const auto DOUBLE_RULE_def = DOUBLE_DIR_KW >> *(double_);
 const auto END_RULE_def = END_DIR_KW >> -(IDENT);
 const auto ENDB_RULE_def = ENDB_DIR_KW >> -(uint_);
@@ -108,12 +116,12 @@ const auto VERSTAMP_RULE_def = VERSTAMP_DIR_KW >> uint_ >> uint_;
 const auto VREG_RULE_def = VREG_DIR_KW >> REG >> uint_ >> uint_;
 const auto WORD_RULE_def = WORD_DIR_KW >> *(expression);
 
-BOOST_SPIRIT_DEFINE(
-    ASM_DIRECTIVE, ALIAS_RULE, ALIGN_RULE, ASCII_RULE, ASCIIZ_RULE) /*ASM0_RULE, BNGB_RULE, BYTE_RULE, COMM_RULE, DATA_RULE,
-    KDATA_RULE, DOUBLE_RULE, END_RULE, ENDB_RULE, ENDR_RULE, ENT_RULE, EXTERN_RULE, ERR_RULE, FILE_RULE,
-    FLOAT_RULE, FMASK_RULE, FRAME_RULE, GLOBAL_RULE, HALF_RULE, LABEL_RULE, LCOMM_RULE, LIVEREG_RULE, LOC_RULE,
-    MASK_RULE, NOALIAS_RULE, OPTIONS_RULE, REPEAT_RULE, RDATA_RULE, SDATA_RULE, SET_RULE, SPACE_RULE,
-    STRUCT_RULE, TEXT_RULE, KTEXT_RULE, VERSTAMP_RULE, VREG_RULE, WORD_RULE)*/
+BOOST_SPIRIT_DEFINE(ASM_DIRECTIVE, ALIAS_RULE, ALIGN_RULE, ASCII_RULE, ASCIIZ_RULE, ASM0_RULE, BNGB_RULE,
+                    BYTE_REPEAT_RULE, BYTE_LITERAL_RULE, COMM_RULE, DATA_RULE, KDATA_RULE/*, DOUBLE_RULE, END_RULE,
+                    ENDB_RULE, ENDR_RULE, ENT_RULE, EXTERN_RULE, ERR_RULE, FILE_RULE, FLOAT_RULE, FMASK_RULE,
+                    FRAME_RULE, GLOBAL_RULE, HALF_RULE, LABEL_RULE, LCOMM_RULE, LIVEREG_RULE, LOC_RULE, MASK_RULE,
+                    NOALIAS_RULE, OPTIONS_RULE, REPEAT_RULE, RDATA_RULE, SDATA_RULE, SET_RULE, SPACE_RULE, STRUCT_RULE,
+                    TEXT_RULE, KTEXT_RULE, VERSTAMP_RULE, VREG_RULE, WORD_RULE*/)
 
 }  // namespace mips_parser
 // ASM_DIRECTIVE:	Y_ALIAS_DIR	Y_REG	Y_REG

@@ -2,6 +2,8 @@
 #ifndef SPIMBOT_PARSER_DIRECTIVE_AST_H
 #define SPIMBOT_PARSER_DIRECTIVE_AST_H
 
+#include <variant>
+
 #include "../expression/ast.h"
 #include "../parser_helpers.h"
 
@@ -128,8 +130,12 @@ struct BgnbDir : x3::position_tagged {
     int symno;
 };
 
-struct ByteDir : x3::position_tagged {
-    std::vector<client::ast::expression> bytes;
+struct ByteRepeatDir : x3::position_tagged {
+    client::ast::RepeatLst<client::ast::expression> lst;
+};
+
+struct ByteLiteralDir : x3::position_tagged {
+    client::ast::LiteralLst<client::ast::expression> lst;
 };
 
 struct CommDir : x3::position_tagged {
@@ -138,11 +144,11 @@ struct CommDir : x3::position_tagged {
 };
 
 struct DataDir : x3::position_tagged {
-    x3::optional<uint32_t> addr;
+    std::optional<uint32_t> addr;
 };
 
 struct KDataDir : x3::position_tagged {
-    x3::optional<uint32_t> addr;
+    std::optional<uint32_t> addr;
 };
 
 struct DoubleDir : x3::position_tagged {
@@ -153,7 +159,7 @@ struct DoubleDir : x3::position_tagged {
  * Should be matched with an ENT name for debugging purposes
  */
 struct EndDir : x3::position_tagged {
-    x3::optional<std::string> proc_name;
+    std::optional<std::string> proc_name;
 };
 
 /**
@@ -173,7 +179,7 @@ struct EndrDir : x3::position_tagged {};
  */
 struct EntDir : x3::position_tagged {
     std::string proc_name;
-    x3::optional<int> lex_level;
+    std::optional<int> lex_level;
 };
 
 struct ExternDir : x3::position_tagged {
@@ -277,14 +283,14 @@ struct RepeatDir : x3::position_tagged {
  * Read-only data
  */
 struct RDataDir : x3::position_tagged {
-    x3::optional<uint32_t> address;
+    std::optional<uint32_t> address;
 };
 
 /**
  * Initialized data relative accessed with GP relative addressing
  */
 struct SDataDir : x3::position_tagged {
-    x3::optional<uint32_t> address;
+    std::optional<uint32_t> address;
 };
 
 struct SetDir : x3::position_tagged {
@@ -301,11 +307,11 @@ struct StructDir : x3::position_tagged {
 };
 
 struct TextDir : x3::position_tagged {
-    x3::optional<uint32_t> addr;
+    std::optional<uint32_t> addr;
 };
 
 struct KTextDir : x3::position_tagged {
-    x3::optional<uint32_t> addr;
+    std::optional<uint32_t> addr;
 };
 
 /******************************************************/
@@ -326,7 +332,7 @@ struct WordDir : x3::position_tagged {
 };
 
 struct Directive
-    : x3::variant<AliasDir, AlignDir, AsciiDir, AsciizDir, Asm0Dir, BgnbDir, ByteDir, CommDir, DataDir, KDataDir,
+    : x3::variant<AliasDir, AlignDir, AsciiDir, AsciizDir, Asm0Dir, BgnbDir, ByteRepeatDir, ByteLiteralDir, CommDir, DataDir, KDataDir,
                   DoubleDir, EndDir, EndbDir, EndrDir, EntDir, ExternDir, ErrDir, FileDir, FloatDir, FmaskDir, FrameDir,
                   GlobalDir, HalfDir, LabelDir, LcommDir, LiveregDir, LocDir, MaskDir, NoaliasDir, OptionDir, RepeatDir,
                   RDataDir, SDataDir, SetDir, SpaceDir, StructDir, TextDir, VerstampDir, VregDir, WordDir> {
@@ -347,7 +353,21 @@ BOOST_FUSION_ADAPT_STRUCT(client::ast::AliasDir, reg1, reg2)
 BOOST_FUSION_ADAPT_STRUCT(client::ast::AlignDir, alignment)
 BOOST_FUSION_ADAPT_STRUCT(client::ast::Asm0Dir, /**/)
 BOOST_FUSION_ADAPT_STRUCT(client::ast::BgnbDir, symno)
-BOOST_FUSION_ADAPT_STRUCT(client::ast::ByteDir, bytes)
+// BOOST_FUSION_ADAPT_STRUCT(client::ast::ByteDir, bytes)
+
+BOOST_FUSION_ADAPT_STRUCT(client::ast::ByteRepeatDir, lst)
+BOOST_FUSION_ADAPT_STRUCT(client::ast::ByteLiteralDir, lst)
+// struct ByteRepeatDir : x3::position_tagged {
+//     client::ast::RepeatLst<client::ast::expression> lst;
+// };
+
+// struct ByteLiteralDir : x3::position_tagged {
+//     client::ast::RepeatLst<client::ast::expression> lst;
+// };
+
+
+// ------------------------------------------------
+
 BOOST_FUSION_ADAPT_STRUCT(client::ast::CommDir, ident, expr)
 BOOST_FUSION_ADAPT_STRUCT(client::ast::DataDir, addr)
 BOOST_FUSION_ADAPT_STRUCT(client::ast::KDataDir, addr)

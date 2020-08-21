@@ -8,6 +8,7 @@ add_executable(tests
     test_parser/test_primitives/test_register.cpp
     test_parser/test_primitives/test_expression.cpp
     test_parser/test_primitives/test_directives.cpp
+    test_parser/test_primitives/test_atomic.cpp
 )
 add_test(NAME SpimbotTests COMMAND tests)
 
