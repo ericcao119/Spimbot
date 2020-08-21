@@ -121,7 +121,7 @@ TEST_CASE("Expression parsing", "[parser][expressions]") {
 
     SECTION("Literal List") {
         client::ast::LiteralLst<client::ast::expression> expr_lst;
-        parse_expression("0 1 2 3", mips_parser::LITERAL_EXPR_LST, expr_lst);
+        parse_expression("0 1 2 3", mips_parser::EXPR_LST, expr_lst);
 
         REQUIRE(expr_lst.size() == 4);
         REQUIRE(eval(expr_lst[0]) == 0);
@@ -132,7 +132,7 @@ TEST_CASE("Expression parsing", "[parser][expressions]") {
 
     SECTION("Repeat List") {
         client::ast::RepeatLst<client::ast::expression> expr_lst;
-        parse_expression("1 : 10", mips_parser::REPEAT_EXPR, expr_lst);
+        parse_expression("1 : 10", mips_parser::REPEAT_EXPR_LST, expr_lst);
 
         REQUIRE(eval(expr_lst.repeat_num) == 10);
         REQUIRE(eval(expr_lst.repeat_value) == 1);

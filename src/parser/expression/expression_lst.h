@@ -10,16 +10,16 @@ const auto set_value = [](auto& ctx) { _val(ctx).repeat_value = _attr(ctx); };
 const auto set_repeat_num = [](auto& ctx) { _val(ctx).repeat_num = _attr(ctx); };
 
 // Repeats
-const auto REPEAT_FLOAT = x3::rule<class repeat_float, client::ast::RepeatLst<double>>{"repeat double"} =
+const auto FP_REPEAT_EXPR_LST = x3::rule<class repeat_float, client::ast::RepeatLst<double>>{"repeat double"} =
     double_[set_value] >> ":" >> expression[set_repeat_num];
 
-const auto FP_EXPR_LST = REPEAT_FLOAT | double_ % (-x3::lit(","));
+const auto FP_EXPR_LST = x3::rule<class float_expr_lst, client::ast::LiteralLst<double>>{"literal double"} =
+    double_ % (-x3::lit(","));
 
-
-const auto REPEAT_EXPR = x3::rule<class repeat_expr, client::ast::RepeatLst<client::ast::expression>>{"repeat expr"} =
+const auto REPEAT_EXPR_LST = x3::rule<class repeat_expr, client::ast::RepeatLst<client::ast::expression>>{"repeat expr"} =
     expression[set_value] >> ":" >> expression[set_repeat_num];
 
-const auto LITERAL_EXPR_LST =
+const auto EXPR_LST =
     x3::rule<class literal_expr_lst, client::ast::LiteralLst<client::ast::expression>>{"literal expr"} =
         expression % (-x3::lit(","));
 }  // namespace mips_parser

@@ -101,40 +101,49 @@ TEST_CASE("Parse directives", "[parser][directive]") {
     }
 
     SECTION("BYTE") {
-        // parse_dir(".byte 123", mips_parser::ASM_DIRECTIVE, directive);
-        // REQUIRE(eval(boost::get<std::vector<expression>>(boost::get<ByteDir>(directive)).size()) == 1);
-        // REQUIRE(eval(boost::get<std::vector<expression>>(boost::get<ByteDir>(directive))[0]) == 123);
+        parse_dir(".byte 123", mips_parser::ASM_DIRECTIVE, directive);
+        REQUIRE(eval(boost::get<ByteDir>(directive).lst.size()) == 1);
+        REQUIRE(eval(boost::get<ByteDir>(directive).lst[0]) == 123);
 
-        // parse_dir(".byte 123 123", mips_parser::ASM_DIRECTIVE, directive);
-        // REQUIRE(eval(boost::get<std::vector<expression>>(boost::get<ByteDir>(directive)).size()) == 2);
-        // REQUIRE(eval(boost::get<std::vector<expression>>(boost::get<ByteDir>(directive))[0]) == 123);
-        // REQUIRE(eval(boost::get<std::vector<expression>>(boost::get<ByteDir>(directive))[1]) == 123);
+        parse_dir(".byte 123 123", mips_parser::ASM_DIRECTIVE, directive);
+        REQUIRE(eval(boost::get<ByteDir>(directive).lst.size()) == 2);
+        REQUIRE(eval(boost::get<ByteDir>(directive).lst[0]) == 123);
+        REQUIRE(eval(boost::get<ByteDir>(directive).lst[1]) == 123);
 
-        // parse_dir(".byte 123, 123", mips_parser::ASM_DIRECTIVE, directive);
-        // REQUIRE(eval(boost::get<std::vector<expression>>(boost::get<ByteDir>(directive)).size()) == 2);
-        // REQUIRE(eval(boost::get<std::vector<expression>>(boost::get<ByteDir>(directive))[0]) == 123);
-        // REQUIRE(eval(boost::get<std::vector<expression>>(boost::get<ByteDir>(directive))[1]) == 123);
+        parse_dir(".byte 123, 123", mips_parser::ASM_DIRECTIVE, directive);
+        REQUIRE(eval(boost::get<ByteDir>(directive).lst.size()) == 2);
+        REQUIRE(eval(boost::get<ByteDir>(directive).lst[0]) == 123);
+        REQUIRE(eval(boost::get<ByteDir>(directive).lst[1]) == 123);
         
-        // parse_dir(".byte 123, 123, 124", mips_parser::ASM_DIRECTIVE, directive);
-        // REQUIRE(eval(boost::get<std::vector<expression>>(boost::get<ByteDir>(directive)).size()) == 3);
-        // REQUIRE(eval(boost::get<std::vector<expression>>(boost::get<ByteDir>(directive))[0]) == 123);
-        // REQUIRE(eval(boost::get<std::vector<expression>>(boost::get<ByteDir>(directive))[1]) == 123);
-        // REQUIRE(eval(boost::get<std::vector<expression>>(boost::get<ByteDir>(directive))[2]) == 124);
+        parse_dir(".byte 123, 123, 124", mips_parser::ASM_DIRECTIVE, directive);
+        REQUIRE(eval(boost::get<ByteDir>(directive).lst.size()) == 3);
+        REQUIRE(eval(boost::get<ByteDir>(directive).lst[0]) == 123);
+        REQUIRE(eval(boost::get<ByteDir>(directive).lst[1]) == 123);
+        REQUIRE(eval(boost::get<ByteDir>(directive).lst[2]) == 124);
 
-        // parse_dir(".byte 123, 123 124", mips_parser::ASM_DIRECTIVE, directive);
-        // REQUIRE(eval(boost::get<std::vector<expression>>(boost::get<ByteDir>(directive)).size()) == 3);
-        // REQUIRE(eval(boost::get<std::vector<expression>>(boost::get<ByteDir>(directive))[0]) == 123);
-        // REQUIRE(eval(boost::get<std::vector<expression>>(boost::get<ByteDir>(directive))[1]) == 123);
-        // REQUIRE(eval(boost::get<std::vector<expression>>(boost::get<ByteDir>(directive))[2]) == 124);
+        parse_dir(".byte 123, 123 124", mips_parser::ASM_DIRECTIVE, directive);
+        REQUIRE(eval(boost::get<ByteDir>(directive).lst.size()) == 3);
+        REQUIRE(eval(boost::get<ByteDir>(directive).lst[0]) == 123);
+        REQUIRE(eval(boost::get<ByteDir>(directive).lst[1]) == 123);
+        REQUIRE(eval(boost::get<ByteDir>(directive).lst[2]) == 124);
         
-        // parse_dir(".byte 123 + a0 123 + deadbeef 124 + 0xdeadbeef", mips_parser::ASM_DIRECTIVE, directive);
-        // REQUIRE(eval(boost::get<std::vector<expression>>(boost::get<ByteDir>(directive)).size()) == 3);
-        // REQUIRE(eval(boost::get<std::vector<expression>>(boost::get<ByteDir>(directive))[0]) == 123 + variable_table.at("a0"));
-        // REQUIRE(eval(boost::get<std::vector<expression>>(boost::get<ByteDir>(directive))[1]) == 123 + variable_table.at("deadbeef"));
-        // REQUIRE(eval(boost::get<std::vector<expression>>(boost::get<ByteDir>(directive))[2]) == 124 + 0xdeadbeef);
+        parse_dir(".byte 123 + a0 123 + deadbeef 124 + 0xdeadbeef", mips_parser::ASM_DIRECTIVE, directive);
+        REQUIRE(eval(boost::get<ByteDir>(directive).lst.size()) == 3);
+        REQUIRE(eval(boost::get<ByteDir>(directive).lst[0]) == 123 + variable_table.at("a0"));
+        REQUIRE(eval(boost::get<ByteDir>(directive).lst[1]) == 123 + variable_table.at("deadbeef"));
+        REQUIRE(eval(boost::get<ByteDir>(directive).lst[2]) == 124 + 0xdeadbeef);
 
-        // REQUIRE_THROWS(parse_dir(".byte", mips_parser::ASM_DIRECTIVE, directive));
-        // REQUIRE_THROWS(parse_dir(".byte ,", mips_parser::ASM_DIRECTIVE, directive));
+        parse_dir(".byte 123: 124", mips_parser::ASM_DIRECTIVE, directive);
+        REQUIRE(eval(boost::get<ByteRepeatDir>(directive).lst.repeat_value) == 123);
+        REQUIRE(eval(boost::get<ByteRepeatDir>(directive).lst.repeat_num) == 124);
+
+        parse_dir(".byte 123 + 1:124 + 1", mips_parser::ASM_DIRECTIVE, directive);
+        REQUIRE(eval(boost::get<ByteRepeatDir>(directive).lst.repeat_value) == 124);
+        REQUIRE(eval(boost::get<ByteRepeatDir>(directive).lst.repeat_num) == 125);
+
+        REQUIRE_THROWS(parse_dir(".byte", mips_parser::ASM_DIRECTIVE, directive));
+        REQUIRE_THROWS(parse_dir(".byte ,", mips_parser::ASM_DIRECTIVE, directive));
+        REQUIRE_THROWS(parse_dir(".byte :", mips_parser::ASM_DIRECTIVE, directive));
     }
 
     SECTION("COMM") {
@@ -185,5 +194,45 @@ TEST_CASE("Parse directives", "[parser][directive]") {
 
         REQUIRE_THROWS(parse_dir(".kdata ab", mips_parser::ASM_DIRECTIVE, directive));
         REQUIRE_THROWS(parse_dir(".kdata 0b10, as", mips_parser::ASM_DIRECTIVE, directive));
+    }
+
+    SECTION("DOUBLE") {
+        parse_dir(".double 123", mips_parser::ASM_DIRECTIVE, directive);
+        REQUIRE(boost::get<DoubleDir>(directive).expression_list.size() == 1);
+        REQUIRE(boost::get<DoubleDir>(directive).expression_list[0] == 123);
+
+        parse_dir(".double 123 124.1", mips_parser::ASM_DIRECTIVE, directive);
+        REQUIRE(boost::get<DoubleDir>(directive).expression_list.size() == 2);
+        REQUIRE(boost::get<DoubleDir>(directive).expression_list[0] == 123);
+        REQUIRE(boost::get<DoubleDir>(directive).expression_list[1] == 124.1);
+
+        parse_dir(".double 123, 1.5", mips_parser::ASM_DIRECTIVE, directive);
+        REQUIRE(boost::get<DoubleDir>(directive).expression_list.size() == 2);
+        REQUIRE(boost::get<DoubleDir>(directive).expression_list[0] == 123);
+        REQUIRE(boost::get<DoubleDir>(directive).expression_list[1] == 1.5);
+        
+        parse_dir(".double 1.23, 1.23, 1.24", mips_parser::ASM_DIRECTIVE, directive);
+        REQUIRE(boost::get<DoubleDir>(directive).expression_list.size() == 3);
+        REQUIRE(boost::get<DoubleDir>(directive).expression_list[0] == 1.23);
+        REQUIRE(boost::get<DoubleDir>(directive).expression_list[1] == 1.23);
+        REQUIRE(boost::get<DoubleDir>(directive).expression_list[2] == 1.24);
+
+        parse_dir(".double 1.23, 1.23 1.24", mips_parser::ASM_DIRECTIVE, directive);
+        REQUIRE(boost::get<DoubleDir>(directive).expression_list.size() == 3);
+        REQUIRE(boost::get<DoubleDir>(directive).expression_list[0] == 1.23);
+        REQUIRE(boost::get<DoubleDir>(directive).expression_list[1] == 1.23);
+        REQUIRE(boost::get<DoubleDir>(directive).expression_list[2] == 1.24);
+
+        parse_dir(".double 1e-5: 124", mips_parser::ASM_DIRECTIVE, directive);
+        REQUIRE(boost::get<DoubleRepeatDir>(directive).repeat_list.repeat_value == 1e-5);
+        REQUIRE(eval(boost::get<DoubleRepeatDir>(directive).repeat_list.repeat_num) == 124);
+
+        parse_dir(".double 0.5:124 + 1", mips_parser::ASM_DIRECTIVE, directive);
+        REQUIRE(boost::get<DoubleRepeatDir>(directive).repeat_list.repeat_value == 0.5);
+        REQUIRE(eval(boost::get<DoubleRepeatDir>(directive).repeat_list.repeat_num) == 125);
+
+        REQUIRE_THROWS(parse_dir(".double", mips_parser::ASM_DIRECTIVE, directive));
+        REQUIRE_THROWS(parse_dir(".double ,", mips_parser::ASM_DIRECTIVE, directive));
+        REQUIRE_THROWS(parse_dir(".double :", mips_parser::ASM_DIRECTIVE, directive));
     }
 }

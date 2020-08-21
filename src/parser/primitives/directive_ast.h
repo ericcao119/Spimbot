@@ -134,7 +134,7 @@ struct ByteRepeatDir : x3::position_tagged {
     client::ast::RepeatLst<client::ast::expression> lst;
 };
 
-struct ByteLiteralDir : x3::position_tagged {
+struct ByteDir : x3::position_tagged {
     client::ast::LiteralLst<client::ast::expression> lst;
 };
 
@@ -152,7 +152,11 @@ struct KDataDir : x3::position_tagged {
 };
 
 struct DoubleDir : x3::position_tagged {
-    std::vector<double> expression_list;
+    client::ast::LiteralLst<double> expression_list;
+};
+
+struct DoubleRepeatDir : x3::position_tagged {
+    client::ast::RepeatLst<double> repeat_list;
 };
 
 /**
@@ -331,11 +335,11 @@ struct WordDir : x3::position_tagged {
     std::vector<client::ast::expression> expression_list;
 };
 
-struct Directive
-    : x3::variant<AliasDir, AlignDir, AsciiDir, AsciizDir, Asm0Dir, BgnbDir, ByteRepeatDir, ByteLiteralDir, CommDir, DataDir, KDataDir,
-                  DoubleDir, EndDir, EndbDir, EndrDir, EntDir, ExternDir, ErrDir, FileDir, FloatDir, FmaskDir, FrameDir,
-                  GlobalDir, HalfDir, LabelDir, LcommDir, LiveregDir, LocDir, MaskDir, NoaliasDir, OptionDir, RepeatDir,
-                  RDataDir, SDataDir, SetDir, SpaceDir, StructDir, TextDir, VerstampDir, VregDir, WordDir> {
+struct Directive : x3::variant<AliasDir, AlignDir, AsciiDir, AsciizDir, Asm0Dir, BgnbDir, ByteRepeatDir, ByteDir,
+                               CommDir, DataDir, KDataDir, DoubleRepeatDir, DoubleDir, EndDir, EndbDir, EndrDir, EntDir, ExternDir,
+                               ErrDir, FileDir, FloatDir, FmaskDir, FrameDir, GlobalDir, HalfDir, LabelDir, LcommDir,
+                               LiveregDir, LocDir, MaskDir, NoaliasDir, OptionDir, RepeatDir, RDataDir, SDataDir,
+                               SetDir, SpaceDir, StructDir, TextDir, VerstampDir, VregDir, WordDir> {
     using base_type::base_type;
     using base_type::operator=;
 };
@@ -353,25 +357,13 @@ BOOST_FUSION_ADAPT_STRUCT(client::ast::AliasDir, reg1, reg2)
 BOOST_FUSION_ADAPT_STRUCT(client::ast::AlignDir, alignment)
 BOOST_FUSION_ADAPT_STRUCT(client::ast::Asm0Dir, /**/)
 BOOST_FUSION_ADAPT_STRUCT(client::ast::BgnbDir, symno)
-// BOOST_FUSION_ADAPT_STRUCT(client::ast::ByteDir, bytes)
-
 BOOST_FUSION_ADAPT_STRUCT(client::ast::ByteRepeatDir, lst)
-BOOST_FUSION_ADAPT_STRUCT(client::ast::ByteLiteralDir, lst)
-// struct ByteRepeatDir : x3::position_tagged {
-//     client::ast::RepeatLst<client::ast::expression> lst;
-// };
-
-// struct ByteLiteralDir : x3::position_tagged {
-//     client::ast::RepeatLst<client::ast::expression> lst;
-// };
-
-
-// ------------------------------------------------
-
+BOOST_FUSION_ADAPT_STRUCT(client::ast::ByteDir, lst)
 BOOST_FUSION_ADAPT_STRUCT(client::ast::CommDir, ident, expr)
 BOOST_FUSION_ADAPT_STRUCT(client::ast::DataDir, addr)
 BOOST_FUSION_ADAPT_STRUCT(client::ast::KDataDir, addr)
 BOOST_FUSION_ADAPT_STRUCT(client::ast::DoubleDir, expression_list)
+BOOST_FUSION_ADAPT_STRUCT(client::ast::DoubleRepeatDir, repeat_list)
 BOOST_FUSION_ADAPT_STRUCT(client::ast::EndDir, proc_name)
 BOOST_FUSION_ADAPT_STRUCT(client::ast::EndbDir, symno)
 BOOST_FUSION_ADAPT_STRUCT(client::ast::EndrDir, /**/)
